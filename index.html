@@ -297,6 +297,12 @@ html{touch-action:manipulation}
 .vout,.vin{will-change:opacity,transform}
 html.lite .dk,html.lite #gear,html.lite .set{-webkit-backdrop-filter:none;backdrop-filter:none}
 html.lite #dock{box-shadow:none}
+/* Extension view: floating bars sit on top of the panel iframe, so no live blur and no looping animation there */
+body.work .dk,body.work #gear,body.work .set{-webkit-backdrop-filter:none;backdrop-filter:none}
+body.work .dk{background:rgba(20,20,20,.97);box-shadow:0 6px 18px rgba(0,0,0,.5)}
+body.work #gear{background:rgba(20,20,20,.97)}
+body.work .set{background:rgba(16,16,16,.985)}
+body.work #gear.on .eq i{animation:none}
 @media(pointer:coarse),(max-width:700px){
  .dk,#gear,.set{-webkit-backdrop-filter:none;backdrop-filter:none}
  .dk{background:rgba(20,20,20,.97);box-shadow:0 6px 18px rgba(0,0,0,.5)}
@@ -711,7 +717,8 @@ dk.querySelectorAll('button[data-v]').forEach(b=>b.addEventListener('click',()=>
 dkh.addEventListener('click',()=>{dkShow();dk.querySelector('[aria-current]').focus({preventScroll:true})});
 ['pointerdown','touchstart','keydown','wheel'].forEach(t=>addEventListener(t,dkShow,{passive:true,capture:true}));
 addEventListener('scroll',dkShow,{passive:true,capture:true});
-addEventListener('pointermove',e=>{const n=performance.now();if(n-dkLast>120){dkLast=n;dkShow()}},{passive:true});
+addEventListener('pointermove',e=>{if(document.body.classList.contains('work'))return;const n=performance.now();if(n-dkLast>120){dkLast=n;dkShow()}},{passive:true});
+dkh.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')dkShow()});
 dk.addEventListener('pointerenter',e=>{if(e.pointerType!=='mouse')return;dkHold=true;clearTimeout(dkT)});
 dk.addEventListener('pointerleave',()=>{dkHold=dk.contains(document.activeElement)&&document.activeElement.matches(':focus-visible');if(!dkHold)dkShow()});
 dk.addEventListener('focusin',()=>{if(document.activeElement.matches(':focus-visible')){dkHold=true;clearTimeout(dkT)}});

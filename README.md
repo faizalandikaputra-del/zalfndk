@@ -6,7 +6,7 @@
 
 - **What it is:** a static website for After Effects editors. A home page with a menu leads to two things: (1) a virtual After Effects host that runs a CEP extension `.zip` in the browser, and (2) a link to the owner's editing pack on Google Drive.
 - **Name:** `zalfndk`. Never rename it. The site zip must always be called **`zalfndk.zip`** and must contain one top-level folder called **`zalfndk/`** with `index.html` inside it. The owner's update script depends on both names.
-- **Version:** 1.1.0 (2026-10-11).
+- **Version:** 1.3.1 (2026-10-11).
 - **Hosting:** GitHub Pages, deployed from a Git repository the owner controls. No build step, no backend, no environment variables.
 - **Owner:** speaks Indonesian and talks to assistants in Indonesian. Likes short, direct replies. **All text inside the website itself must be English.** This README and `PANDUAN.md` in the deploy kit are the only Indonesian-friendly docs.
 - **Style:** monochrome terminal HUD (near-black, greys, JetBrains Mono), inspired by the structure of leylin.love and built on the owner's earlier "panelview" site. See "UI style" and "HUD look".
@@ -177,6 +177,9 @@ Quick check after any deploy: the gate shows, **EXECUTE / ENTER** starts the mus
 
 ## Changelog
 
+- **1.3.1 (2026-10-11):** browser history. Switching between Home and Extension now pushes a history entry (`#home`, `#ext`), so the mouse back button, back swipe and Alt+Left return to the previous view. `popstate` calls `go(v,true)` (no new entry). The Home link in the HUD bar no longer adds duplicate entries.
+- **1.3.0 (2026-10-11):** bottom tab bar (`#tabbar`, class `.dk`) with Home, Extension and Editing pack. Auto-hides after 3s without interaction and slides up from the bottom on any pointer, touch, key, wheel or scroll event. A small handle at the bottom edge (`#dkh`) shows it again. Hovering or keyboard-focusing the bar keeps it open. A sliding highlight marks the active tab. The audio widget moves up while the bar is visible. Appears only after the entrance click. Note: `#dock` is the extension panel frame, do not reuse that id. Taps inside the extension iframe do not reach the page, so use the bottom handle there.
+- **1.2.0 (2026-10-11):** haptic feedback on touch devices. Every button, link and toast fires a short vibration through the same `sfx()` cues (`click`, `tick`, `sweep`, `granted`). Android uses `navigator.vibrate`; iOS 18+ uses a hidden `<input type=checkbox switch>` toggled by a label click. A `HAPTIC ON/OFF` button in the audio widget (shown only on touch devices that support it) saves to `localStorage` key `zf-hap`. Desktop is unchanged.
 - **1.1.0 (2026-10-11):** inline icon sprite and an icon on every button, link and card; new Workflow (3 steps) and Capabilities (6 items) sections so the home page is fuller; smoother motion (view transitions, scroll reveal, pointer glow on cards, sliding nav underline, equalizer in the audio widget, rain and visualizer on `requestAnimationFrame`, smooth scrolling); the gate button now shows an icon instead of the `>` character.
 - **1.0.0 (2026-10-11):** current release. Home page with menu (Extension, Editing pack), virtual After Effects host built from the owner's panelview code, access gate with execute button, matrix rain in grey, typed code terminal and neofetch block, HUD style inspired by leylin.love, synthesized lofi music and SFX with a player widget, themed controls (no native UI), self-hosted assets, deploy files and update scripts, handoff README.
 

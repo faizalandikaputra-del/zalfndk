@@ -6,7 +6,7 @@
 
 - **What it is:** a static website for After Effects editors. A home page with a menu leads to two things: (1) a virtual After Effects host that runs a CEP extension `.zip` in the browser, and (2) a link to the owner's editing pack on Google Drive.
 - **Name:** `zalfndk`. Never rename it. The site zip must always be called **`zalfndk.zip`** and must contain one top-level folder called **`zalfndk/`** with `index.html` inside it. The owner's update script depends on both names.
-- **Version:** 1.5.2 (2026-10-11).
+- **Version:** 1.6.1 (2026-10-11).
 - **Hosting:** GitHub Pages, deployed from a Git repository the owner controls. No build step, no backend, no environment variables.
 - **Owner:** speaks Indonesian and talks to assistants in Indonesian. Likes short, direct replies. **All text inside the website itself must be English.** This README and `PANDUAN.md` in the deploy kit are the only Indonesian-friendly docs.
 - **Style:** monochrome terminal HUD (near-black, greys, JetBrains Mono), inspired by the structure of leylin.love and built on the owner's earlier "panelview" site. See "UI style" and "HUD look".
@@ -81,9 +81,9 @@ The inline script, in order:
 6. **Loading:** `loadZip` reads `CSXS/manifest.xml` (bundle id, name, version, host, `MainPath`, `ScriptPath`, size, multiple `Extension` entries), falls back to `index.html` when there is no manifest, then evaluates every `.jsx` in the hidden host. `pick` handles the file input and drag and drop. `demo` builds a demo zip in memory.
 7. **Panel UI:** `apply`/`setSize` (size, auto fit, zoom), resize grip, theme toggle (Dark/Light panels), reload, and the console input `#cmd`.
 8. **Gate and views:** `leave` (execute click), `go`.
-9. **Matrix rain** (grey glyphs on `#rain`).
+9. **Matrix rain** (grey glyphs on `#rain`; per-column state in `cols`, full redraw each tick, glyph atlas `at`).
 10. **Home animations:** `SN` snippets, `hl` highlighter, `typeLoop` (typing in the terminal window), `heroType` (headline), `clk` (clock), the 40-band visualizer.
-11. **Audio:** `ac`, `tone`, `noise`, `kick`, `p8`, `sched`, `playM`, `stopM`, `sfx`, `ui`. Preferences are stored in `localStorage` under `zf-music`, `zf-sfx`, `zf-vol`, `zf-hap`, `zf-rain` and `zf-auto`.
+11. **Audio:** `ac`, `tone`, `noise`, `kick`, `p8`, `sched`, `playM`, `stopM`, `sfx`, `ui`. Preferences are stored in `localStorage` under `zf-music`, `zf-sfx`, `zf-vol`, `zf-hap`, `zf-hs` (haptic strength 0 to 2), `zf-rain` and `zf-auto`.
 12. **Themed controls:** `toast`, range fill (`fill`, `fillAll`), number steppers.
 13. **Icons and reveal:** `ic(name)` returns an icon `<svg>`; an `IntersectionObserver` adds `.in` to `.sr` elements as they scroll into view; a `pointermove` listener feeds `--mx`/`--my` to the card glow.
 
@@ -118,7 +118,7 @@ The home page follows an eDEX-UI style HUD, inspired by the structure of leylin.
 - **HUD bar:** `> zalfndk` brand, uppercase nav (Home, Extension, Editing pack with a `> ` marker on hover) and a live local clock with GMT offset.
 - **Hero:** `// HELLO, WORLD.` label, a typed three-line headline with a block cursor, and a terminal window that shows a `neofetch` block and then types `host.jsx` snippets.
 - **Modules:** section title `// MODULES 02 OBJECTS`. Each card has a small uppercase status row (`01 / extension`, `STATUS READY`), a title like `Extension // Browser host`, a description, tag chips and an `Open / ...` action.
-- **Footer:** `cava --mono` style bar visualizer with 40 bands (static under reduced motion).
+- **Footer:** `cava --mono` style bar visualizer with 40 bands. It reads the real music through an `AnalyserNode` (`AN`, tapped after the low-pass filter, music only, no SFX), log-spaced from 40 Hz to 2.4 kHz, volume-compensated. Bars rest flat while music is paused. Static under reduced motion.
 - **Micro labels:** 10.5px, uppercase, letter-spaced, muted grey. Use them for status text only.
 
 ## Custom controls
@@ -139,7 +139,7 @@ The page was audited for browser-default UI. Everything below is themed to match
 All sound is generated in the browser with the Web Audio API. There are no audio files, no external audio hosts and no licensing to track.
 
 - **Music:** a looping lofi track at 76 BPM: soft maj7 and min7 chords (F, Em, Dm, C), a low bass, a gentle kick, a muted snare, hats, a sparse pentatonic melody and vinyl crackle, all through a low-pass filter. It starts after the execute click and can be paused.
-- **Settings (bottom right):** a gear button (with a small equalizer while music plays) opens a sheet: bottom sheet on phones, right-hand drawer (360px, full height) on laptops, where the gear fades out while it is open. Rows: Music, Volume (default 35%), Sound effects, Haptic feedback (disabled where unsupported), Matrix rain, Auto-hide tab bar, plus Reset to defaults. Switches are `button[role=switch]` (`.sw`). Close with the X, a tap outside, or Esc. Choices are remembered in `localStorage`.
+- **Settings (bottom right):** a gear button (with a small equalizer while music plays) opens a sheet: bottom sheet on phones, right-hand drawer (360px, full height) on laptops, where the gear fades out while it is open. Rows: Music, Volume (default 35%), Sound effects, Haptic feedback (disabled where unsupported), Haptic strength (Light, Medium, Strong; segmented `.seg` radio group, tapping a level plays a preview), Matrix rain, Auto-hide tab bar, plus Reset to defaults. Switches are `button[role=switch]` (`.sw`). Close with the X, a tap outside, or Esc. Choices are remembered in `localStorage`.
 - **SFX:** soft UI click on buttons and links, a faint hover blip (mouse only), key ticks while the headline types, an access-granted chime on execute and when a zip loads, and a sweep when switching between Home and Extension.
 - Browsers block sound until a user gesture, which is why the gate button starts the audio.
 - To use a real song instead, embed a track you own or have a license for (as a data URI or an asset), keep it under the 16 MB page limit, and keep the same player controls.
@@ -157,7 +157,7 @@ All sound is generated in the browser with the Web Audio API. There are no audio
 - **Smooth scrolling:** `scroll-behavior: smooth` for anchor links.
 - **Reduced motion:** rain and typing stop, reveals and entrances show instantly, smooth scrolling is off.
 
-**Icons:** one inline SVG sprite at the top of `<body>`. Each icon is a `<symbol id="i-name" viewBox="0 0 24 24">`, drawn with 1.6px strokes, square caps, mitered joins, no fill, `currentColor`. Use it like `<svg class="ic" aria-hidden="true"><use href="#i-name"/></svg>`. In JavaScript use `ic('name')`. Current names: term, home, box, folder, down, right, ext, play, pause, vol, zap, zapoff, wave, upload, dock, land, win, fit, max, moon, sun, reload, plus, minus, x, info, plug, code, layers.
+**Icons:** one inline SVG sprite at the top of `<body>`. Each icon is a `<symbol id="i-name" viewBox="0 0 24 24">`, drawn with 1.6px strokes, square caps, mitered joins, no fill, `currentColor`. Use it like `<svg class="ic" aria-hidden="true"><use href="#i-name"/></svg>`. In JavaScript use `ic('name')`. Current names: term, home, box, folder, down, right, ext, play, pause, vol, zap, zapoff, wave, upload, dock, land, win, fit, max, moon, sun, reload, plus, minus, x, info, plug, code, layers, lv1, lv2, lv3 (haptic strength levels).
 
 - Buttons and links are inline-flex with a 7px gap between icon and label.
 - The menu cards and workflow/capability cells use a 34px bordered icon tile (`.cico`).
@@ -177,6 +177,8 @@ Quick check after any deploy: the gate shows, **EXECUTE / ENTER** starts the mus
 
 ## Changelog
 
+- **1.6.1 (2026-10-11):** matrix rain no longer restarts on phones. Old design painted trails onto the canvas and kept state only in the pixels, so anything that cleared or resized the canvas (width change from zoom or rotation, the browser purging canvas memory) restarted the rain from an empty screen. Now each column keeps its own state (head position, speed, trail glyphs), the whole frame is redrawn every tick from a pre-rendered glyph atlas, and movement is time-based (`dt` capped at 100ms, so pausing never makes it jump). Resizing only adds or removes columns. Also `html{overscroll-behavior-y:contain}` so pull-to-refresh on phones cannot reload the page and replay the boot gate.
+- **1.6.0 (2026-10-11):** haptic strength option in Settings (Light, Medium, Strong, saved as `zf-hs`, included in Reset). Android scales the vibration length (x0.6, x1, x2.2); iOS cannot vary strength, so Light fires one tick and Strong adds a second tick. The footer visualizer now follows the music: it reads an `AnalyserNode` instead of random values, so bars move with the kick, bass, chords and melody and fall flat when music is paused. Footer label changed from `GENERATIVE` to `LIVE`. New icons `i-lv1`, `i-lv2`, `i-lv3`.
 - **1.5.2 (2026-10-11):** matrix rain no longer restarts while scrolling on phones. The browser address bar changes `innerHeight` on scroll, which fired `resize` and rebuilt the rain; now only a width change resets it, and on touch devices the canvas is 160px taller than the viewport so a height change never needs a redraw. The hero headline is now just "Hi! This is zalfndk".
 - **1.5.1 (2026-10-11):** laptop settings are now a right-hand drawer, and the gear no longer jumps when the tab bar shows (it only moves up on phones). Phone performance pass: no `backdrop-filter` blur on touch or narrow screens (the blur re-rendered on every frame during tab changes), lighter shadows, matrix rain throttled to about 22fps and skipped on the Extension page and while the sheet is open on touch devices, visualizer limited to 30fps and paused offscreen, glow tracking for mouse only, noise buffers cached in the audio engine, tab bar scroll events throttled, `touch-action: manipulation` for instant taps.
 - **1.5.0 (2026-10-11):** settings menu. The floating audio widget is replaced by a gear button and a settings sheet (Music, Volume, Sound effects, Haptic feedback, Matrix rain, Auto-hide tab bar, Reset). New icon `i-set`. New saved keys `zf-vol`, `zf-rain`, `zf-auto`. The tab bar hides while the sheet is open. Removed the old `.pl` widget and its `#plb #sfxb #hapb` buttons.

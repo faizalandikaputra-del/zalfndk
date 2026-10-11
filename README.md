@@ -6,7 +6,7 @@
 
 - **What it is:** a static website for After Effects editors. A home page with a menu leads to two things: (1) a virtual After Effects host that runs a CEP extension `.zip` in the browser, and (2) a link to the owner's editing pack on Google Drive.
 - **Name:** `zalfndk`. Never rename it. The site zip must always be called **`zalfndk.zip`** and must contain one top-level folder called **`zalfndk/`** with `index.html` inside it. The owner's update script depends on both names.
-- **Version:** 1.3.1 (2026-10-11).
+- **Version:** 1.5.0 (2026-10-11).
 - **Hosting:** GitHub Pages, deployed from a Git repository the owner controls. No build step, no backend, no environment variables.
 - **Owner:** speaks Indonesian and talks to assistants in Indonesian. Likes short, direct replies. **All text inside the website itself must be English.** This README and `PANDUAN.md` in the deploy kit are the only Indonesian-friendly docs.
 - **Style:** monochrome terminal HUD (near-black, greys, JetBrains Mono), inspired by the structure of leylin.love and built on the owner's earlier "panelview" site. See "UI style" and "HUD look".
@@ -67,7 +67,7 @@ The owner also has a separate **deploy kit** (not part of this zip): `update-web
 
 ## How `index.html` is organized
 
-Page structure, in document order: `#rain` (matrix canvas), the SVG icon sprite, `#boot` (access gate), `.pl` (audio widget), `#home` (home view: HUD bar, hero, modules, workflow, capabilities, footer), `#ext` (extension view, hidden until opened), then `assets/jszip.min.js` and one inline script.
+Page structure, in document order: `#rain` (matrix canvas), the SVG icon sprite, `#boot` (access gate), `#gear`, `#setbk`, `#set` (settings button and sheet), `#home` (home view: HUD bar, hero, modules, workflow, capabilities, footer), `#ext` (extension view, hidden until opened), then `assets/jszip.min.js` and one inline script.
 
 Views switch with `go('home' | 'ext')`, which plays a short exit and enter transition (skipped under reduced motion). The body gets class `work` in the extension view, which dims the rain.
 
@@ -83,7 +83,7 @@ The inline script, in order:
 8. **Gate and views:** `leave` (execute click), `go`.
 9. **Matrix rain** (grey glyphs on `#rain`).
 10. **Home animations:** `SN` snippets, `hl` highlighter, `typeLoop` (typing in the terminal window), `heroType` (headline), `clk` (clock), the 40-band visualizer.
-11. **Audio:** `ac`, `tone`, `noise`, `kick`, `p8`, `sched`, `playM`, `stopM`, `sfx`, `ui`. Preferences are stored in `localStorage` under `zf-music` and `zf-sfx`.
+11. **Audio:** `ac`, `tone`, `noise`, `kick`, `p8`, `sched`, `playM`, `stopM`, `sfx`, `ui`. Preferences are stored in `localStorage` under `zf-music`, `zf-sfx`, `zf-vol`, `zf-hap`, `zf-rain` and `zf-auto`.
 12. **Themed controls:** `toast`, range fill (`fill`, `fillAll`), number steppers.
 13. **Icons and reveal:** `ic(name)` returns an icon `<svg>`; an `IntersectionObserver` adds `.in` to `.sr` elements as they scroll into view; a `pointermove` listener feeds `--mx`/`--my` to the card glow.
 
@@ -139,7 +139,7 @@ The page was audited for browser-default UI. Everything below is themed to match
 All sound is generated in the browser with the Web Audio API. There are no audio files, no external audio hosts and no licensing to track.
 
 - **Music:** a looping lofi track at 76 BPM: soft maj7 and min7 chords (F, Em, Dm, C), a low bass, a gentle kick, a muted snare, hats, a sparse pentatonic melody and vinyl crackle, all through a low-pass filter. It starts after the execute click and can be paused.
-- **Player widget (bottom right):** status text, Play/Pause, a volume slider (default 35%) and an SFX on/off switch. Choices are remembered in `localStorage`.
+- **Settings (bottom right):** a gear button (with a small equalizer while music plays) opens a sheet: bottom sheet on phones, popover on desktop. Rows: Music, Volume (default 35%), Sound effects, Haptic feedback (disabled where unsupported), Matrix rain, Auto-hide tab bar, plus Reset to defaults. Switches are `button[role=switch]` (`.sw`). Close with the X, a tap outside, or Esc. Choices are remembered in `localStorage`.
 - **SFX:** soft UI click on buttons and links, a faint hover blip (mouse only), key ticks while the headline types, an access-granted chime on execute and when a zip loads, and a sweep when switching between Home and Extension.
 - Browsers block sound until a user gesture, which is why the gate button starts the audio.
 - To use a real song instead, embed a track you own or have a license for (as a data URI or an asset), keep it under the 16 MB page limit, and keep the same player controls.
@@ -153,7 +153,7 @@ All sound is generated in the browser with the Web Audio API. There are no audio
 - **Entrance:** elements rise 16px and fade in. Home hero items stagger 50ms apart after the execute click (`.rise`, variable `--i`). Sections below the fold reveal once on scroll (`.sr` plus `.in`, variable `--d` at 60ms steps). Stagger totals stay under 500ms.
 - **View change:** home and Extension cross-fade with a small vertical shift (`.vout`, `.vin`).
 - **Hover and press:** menu cards lift 2px and show a soft pointer-following glow; the icon tile inverts; the action arrow slides 3px. Buttons darken or invert in 150ms and scale to 0.97 on press. HUD nav links get a 1px underline that slides in.
-- **Ambient:** grey matrix rain (60fps canvas, one glyph per cell, per-column speeds), a 40-band visualizer that eases toward its targets, blinking caret, and a 3-bar equalizer in the audio widget while music plays.
+- **Ambient:** grey matrix rain (60fps canvas, one glyph per cell, per-column speeds), a 40-band visualizer that eases toward its targets, blinking caret, and a 3-bar equalizer on the settings button while music plays.
 - **Smooth scrolling:** `scroll-behavior: smooth` for anchor links.
 - **Reduced motion:** rain and typing stop, reveals and entrances show instantly, smooth scrolling is off.
 
@@ -177,6 +177,8 @@ Quick check after any deploy: the gate shows, **EXECUTE / ENTER** starts the mus
 
 ## Changelog
 
+- **1.5.0 (2026-10-11):** settings menu. The floating audio widget is replaced by a gear button and a settings sheet (Music, Volume, Sound effects, Haptic feedback, Matrix rain, Auto-hide tab bar, Reset). New icon `i-set`. New saved keys `zf-vol`, `zf-rain`, `zf-auto`. The tab bar hides while the sheet is open. Removed the old `.pl` widget and its `#plb #sfxb #hapb` buttons.
+- **1.4.0 (2026-10-11):** phone layout pass (max-width 700px). Extension page no longer overflows sideways: the top bar keeps only the brand and the demo button, the toolbar is one swipeable row, the stage has less padding. The top menu on Home is hidden because the bottom tab bar replaces it. The audio widget is a compact icon-only pill (volume hidden) that moves above the tab bar. Content gets bottom padding so the bar never covers it. Tab bar redesigned: rounder, blurred glass, a sliding highlight, and the active icon lifts slightly.
 - **1.3.1 (2026-10-11):** browser history. Switching between Home and Extension now pushes a history entry (`#home`, `#ext`), so the mouse back button, back swipe and Alt+Left return to the previous view. `popstate` calls `go(v,true)` (no new entry). The Home link in the HUD bar no longer adds duplicate entries.
 - **1.3.0 (2026-10-11):** bottom tab bar (`#tabbar`, class `.dk`) with Home, Extension and Editing pack. Auto-hides after 3s without interaction and slides up from the bottom on any pointer, touch, key, wheel or scroll event. A small handle at the bottom edge (`#dkh`) shows it again. Hovering or keyboard-focusing the bar keeps it open. A sliding highlight marks the active tab. The audio widget moves up while the bar is visible. Appears only after the entrance click. Note: `#dock` is the extension panel frame, do not reuse that id. Taps inside the extension iframe do not reach the page, so use the bottom handle there.
 - **1.2.0 (2026-10-11):** haptic feedback on touch devices. Every button, link and toast fires a short vibration through the same `sfx()` cues (`click`, `tick`, `sweep`, `granted`). Android uses `navigator.vibrate`; iOS 18+ uses a hidden `<input type=checkbox switch>` toggled by a label click. A `HAPTIC ON/OFF` button in the audio widget (shown only on touch devices that support it) saves to `localStorage` key `zf-hap`. Desktop is unchanged.

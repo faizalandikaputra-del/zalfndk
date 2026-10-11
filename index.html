@@ -1,4 +1,5 @@
 <!doctype html>
+<!-- zalfndk. AI assistants and developers: read README.md before editing this file. Keep the zip name zalfndk.zip and the top folder zalfndk/. -->
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="utf-8">
@@ -123,7 +124,7 @@ body.work #rain{opacity:.12}
 .hud nav{display:flex;gap:4px;margin-left:auto}
 .hud nav a,.hud nav button{border:0;border-radius:0;padding:4px 10px;color:var(--mut);text-decoration:none;background:none;font:inherit;letter-spacing:inherit;text-transform:inherit;cursor:pointer}
 .hud nav a:hover,.hud nav button:hover{color:var(--fg);background:none}
-.hud nav a:hover::before,.hud nav button:hover::before{content:"> "}
+
 .hud .stat{color:var(--mut)}
 @media(max-width:700px){.hud{flex-wrap:wrap;gap:8px}.hud .stat{display:none}.hud nav{margin-left:0;flex-wrap:wrap}}
 .hero{display:block;min-height:0;padding:0 0 32px}
@@ -140,7 +141,7 @@ h2 .n{float:right;color:var(--mut);font-weight:400;font-size:10.5px;letter-spaci
 .tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}.tags i{font-style:normal;font-size:10.5px;border:1px solid var(--line);padding:1px 7px}
 .mi .go{text-transform:uppercase;letter-spacing:.1em;font-size:10.5px}
 .foot{padding:24px 0 48px}
-.viz{display:flex;align-items:flex-end;gap:3px;height:56px;margin:10px 0}.viz i{flex:1;min-width:2px;background:var(--fg);opacity:.75;height:6%}
+.viz{display:flex;align-items:flex-end;gap:3px;height:56px;margin:10px 0}.viz i{flex:1;min-width:2px;background:var(--fg);opacity:.75}
 
 /* audio widget */
 .pl{position:fixed;right:12px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:4;display:flex;align-items:center;gap:10px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:rgba(16,16,16,.9);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
@@ -172,10 +173,56 @@ input[type=range]:hover::-moz-range-thumb,input[type=range]:focus-visible::-moz-
 #toasts{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:12px;z-index:8;display:grid;gap:8px;max-width:min(360px,calc(100vw - 24px))}
 .toast{border:1px solid var(--line);border-radius:6px;background:rgba(16,16,16,.95);padding:8px 12px;animation:in .25s var(--ease);transition:opacity .2s var(--ease),transform .2s var(--ease)}
 .toast p{margin:4px 0 0;overflow-wrap:anywhere}.toast.out{opacity:0;transform:translateX(8px)}
+
+/* icons + motion (v1.1) */
+:root{--t1:.15s;--t2:.3s;--t3:.45s}
+html{scroll-behavior:smooth}
+.ic{width:14px;height:14px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:square;stroke-linejoin:miter}
+button,a.btn,.hud nav a{display:inline-flex;align-items:center;gap:7px}
+button,a.btn{transition:background var(--t1) var(--ease),color var(--t1) var(--ease),transform .12s var(--ease),border-color var(--t1) var(--ease)}
+.hud nav a,.hud nav button{position:relative}
+.hud nav a::after,.hud nav button::after{content:"";position:absolute;left:10px;right:10px;bottom:0;height:1px;background:var(--fg);transform:scaleX(0);transform-origin:left;transition:transform .25s var(--ease)}
+.hud nav a:hover::after,.hud nav button:hover::after{transform:scaleX(1)}
+#exec .ic{width:15px;height:15px}
+.hero .btn .ic{transition:transform .25s var(--ease)}.hero .btn:hover .ic{transform:translateY(3px)}
+.cbar span:first-child{display:inline-flex;align-items:center;gap:7px}
+.cico{display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line);border-radius:5px;transition:border-color var(--t1) var(--ease),background var(--t1) var(--ease),color var(--t1) var(--ease)}
+.cico .ic{width:18px;height:18px}
+.mi:hover .cico,.cell:hover .cico{border-color:var(--fg);background:var(--fg);color:var(--bg)}
+.mi .go{display:inline-flex;align-items:center;gap:7px}.mi .go .ic{width:13px;height:13px;transition:transform .25s var(--ease)}.mi:hover .go .ic{transform:translateX(3px)}
+.mi{position:relative;overflow:hidden;transition:background .2s var(--ease),border-color .2s var(--ease),transform .25s var(--ease)}
+#home.go .mi:hover{transform:translateY(-2px)}#home.go .mi:active{transform:translateY(0) scale(.99)}
+.mi::before,.cell::before{content:"";position:absolute;inset:0;background:radial-gradient(180px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.07),transparent 70%);opacity:0;transition:opacity var(--t2) var(--ease);pointer-events:none}
+.mi:hover::before,.cell:hover::before{opacity:1}
+#home.go .rise{opacity:1;transform:none;animation:rise var(--t3) var(--ease) backwards;animation-delay:calc(var(--i)*50ms)}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}}
+.sr{opacity:0;transform:translateY(14px)}
+.sr.in{opacity:1;transform:none;transition:opacity var(--t3) var(--ease) calc(var(--d,0)*60ms),transform var(--t3) var(--ease) calc(var(--d,0)*60ms),border-color .2s var(--ease),background .2s var(--ease)}
+h2.sr{margin-top:48px}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin:0 0 8px}
+@media(max-width:900px){.grid3{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:560px){.grid3{grid-template-columns:minmax(0,1fr)}}
+.cell{position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:8px;padding:16px;border:1px solid var(--line);border-radius:6px}
+.cell:hover{border-color:var(--mut)}
+.cell .hud-row{width:100%;margin-bottom:6px}
+.cell b{font-size:12px;text-transform:uppercase;letter-spacing:.04em}
+.cell p{margin:0;color:var(--mut);font-size:12px}
+.vout{opacity:0;transform:translateY(-8px);transition:opacity .18s cubic-bezier(.3,0,1,1),transform .18s cubic-bezier(.3,0,1,1)}
+.vin{animation:vin .35s var(--ease) both}@keyframes vin{from{opacity:0;transform:translateY(12px)}}
+.viz i{height:100%;transform:scaleY(.06);transform-origin:bottom;will-change:transform}
+.eq{display:inline-flex;gap:2px;align-items:flex-end;height:10px}
+.eq i{width:2px;height:100%;background:currentColor;transform:scaleY(.25);transform-origin:bottom;transition:transform var(--t2) var(--ease)}
+.pl.on .eq i{animation:eq 1s ease-in-out infinite}.pl.on .eq i:nth-child(2){animation-delay:.2s}.pl.on .eq i:nth-child(3){animation-delay:.4s}
+@keyframes eq{50%{transform:scaleY(1)}}
+.pl label .ic{width:13px;height:13px}
+h2 .ic{margin-right:8px;vertical-align:-2px}
+#drop .ic{width:20px;height:20px}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.sr{opacity:1;transform:none}.rise{opacity:1;transform:none}}
 </style>
 </head>
 <body>
 <canvas id="rain" aria-hidden="true"></canvas>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs><symbol id="i-term" viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M8 10l3 2-3 2M13 15h4"/></symbol><symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/><path d="M10 20v-5h4v5"/></symbol><symbol id="i-box" viewBox="0 0 24 24"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/></symbol><symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v11H3z"/></symbol><symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v15M6 13l6 6 6-6"/></symbol><symbol id="i-right" viewBox="0 0 24 24"><path d="M4 12h15M13 6l6 6-6 6"/></symbol><symbol id="i-ext" viewBox="0 0 24 24"><path d="M7 17L17 7M9 7h8v8"/></symbol><symbol id="i-play" viewBox="0 0 24 24"><path d="M7 5l12 7-12 7z"/></symbol><symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol><symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/></symbol><symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 3L5 13h6l-1 8 8-10h-6z"/></symbol><symbol id="i-zapoff" viewBox="0 0 24 24"><path d="M13 3L5 13h6l-1 8 8-10h-6z"/><path d="M4 4l16 16"/></symbol><symbol id="i-wave" viewBox="0 0 24 24"><path d="M3 12h2M7 7v10M11 4v16M15 8v8M19 10v4"/></symbol><symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v4h16v-4"/></symbol><symbol id="i-dock" viewBox="0 0 24 24"><path d="M7 3h10v18H7z"/><path d="M7 7h10"/></symbol><symbol id="i-land" viewBox="0 0 24 24"><path d="M3 7h18v10H3z"/><path d="M7 7v10"/></symbol><symbol id="i-win" viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M4 10h16"/></symbol><symbol id="i-fit" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol><symbol id="i-max" viewBox="0 0 24 24"><path d="M5 5h14v14H5z"/></symbol><symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 019.5 4 8 8 0 1020 14.5z"/></symbol><symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M5 5l2 2M17 17l2 2M19 5l-2 2M7 17l-2 2"/></symbol><symbol id="i-reload" viewBox="0 0 24 24"><path d="M20 11a8 8 0 10-2.3 5.7"/><path d="M20 4v7h-7"/></symbol><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol><symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5h.01"/></symbol><symbol id="i-plug" viewBox="0 0 24 24"><path d="M9 3v5M15 3v5M6 8h12v4a6 6 0 01-12 0zM12 18v3"/></symbol><symbol id="i-code" viewBox="0 0 24 24"><path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/></symbol><symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5"/></symbol></defs></svg>
 <div id="boot" role="dialog" aria-label="Start">
  <div class="gate">
   <p class="hud-row" style="--i:0"><span>ACCESS GATE</span><span>SYS / v1.0.0</span></p>
@@ -190,26 +237,26 @@ input[type=range]:hover::-moz-range-thumb,input[type=range]:focus-visible::-moz-
   </ul>
   <dl class="who" style="--i:8"><dt>USER</dt><dd>zalfndk</dd><dt>ROLE</dt><dd>After Effects tools</dd><dt>STATUS</dt><dd>READY</dd></dl>
   <p class="k" id="bootmsg" style="--i:9">AUTHORIZATION COMPLETE / WAITING FOR INPUT</p>
-  <button id="exec" style="--i:10">&gt; EXECUTE / ENTER</button>
+  <button id="exec" style="--i:10"><svg class="ic" aria-hidden="true"><use href="#i-term"/></svg>EXECUTE / ENTER</button>
  </div>
 </div>
 <aside class="pl" aria-label="Audio">
- <span class="st" id="pst">LOFI / READY</span>
- <button id="plb" aria-pressed="false">&gt; Play</button>
- <label>Vol <input type="range" id="vol" min="0" max="100" value="35" aria-label="Music volume"></label>
- <button id="sfxb" aria-pressed="true">SFX ON</button>
+ <span class="eq" aria-hidden="true"><i></i><i></i><i></i></span><span class="st" id="pst">LOFI / READY</span>
+ <button id="plb" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Play</button>
+ <label><svg class="ic" aria-hidden="true"><use href="#i-vol"/></svg><input type="range" id="vol" min="0" max="100" value="35" aria-label="Music volume"></label>
+ <button id="sfxb" aria-pressed="true"><svg class="ic" aria-hidden="true"><use href="#i-zap"/></svg>SFX ON</button>
 </aside>
 <div id="home">
  <header class="hud rise" style="--i:0"><b>&gt; zalfndk</b>
-  <nav aria-label="Main menu"><a href="#home">Home</a><button id="nExt">Extension</button><a href="https://drive.google.com/drive/folders/16WjkwlaowmNgWo8u-dz8DMb80xT4HaBp?usp=drive_link" target="_blank" rel="noopener noreferrer">Editing pack</a></nav>
+  <nav aria-label="Main menu"><a href="#home"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg>Home</a><button id="nExt"><svg class="ic" aria-hidden="true"><use href="#i-box"/></svg>Extension</button><a href="https://drive.google.com/drive/folders/16WjkwlaowmNgWo8u-dz8DMb80xT4HaBp?usp=drive_link" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#i-folder"/></svg>Editing pack</a></nav>
   <span class="stat" id="clk">LOCAL / TIME --:--</span></header>
  <section class="hero">
   <p class="eyebrow rise" style="--i:1">// HELLO, WORLD.</p>
   <h1 class="rise" style="--i:2" aria-label="Hi! This is zalfndk. After Effects tools."><span id="hl" aria-hidden="true"></span><span class="blk" aria-hidden="true">&#9608;</span></h1>
   <p class="lede rise" style="--i:3">Run an After Effects extension from its zip, right in the browser, without opening After Effects. Grab the editing pack too.</p>
-  <a class="btn rise" style="--i:4" href="#modules">&gt; View menu</a>
+  <a class="btn rise" style="--i:4" href="#modules"><svg class="ic" aria-hidden="true"><use href="#i-down"/></svg>View menu</a>
   <div class="term rise" style="--i:5" aria-hidden="true">
-   <div class="cbar"><span>zalfndk@host:~</span><span id="cstat">typing</span></div>
+   <div class="cbar"><span><svg class="ic" aria-hidden="true"><use href="#i-term"/></svg>zalfndk@host:~</span><span id="cstat">typing</span></div>
    <p class="pr">&gt; neofetch</p>
    <dl class="nf"><dt>Host</dt><dd>Virtual After Effects</dd><dt>Modules</dt><dd>Extension runner, Editing pack</dd><dt>Bridge</dt><dd>CSInterface mock</dd><dt>Theme</dt><dd>Monochrome</dd><dt>Stack</dt><dd>HTML / JS / JSZip</dd></dl>
    <p class="pr">&gt; cat host.jsx</p>
@@ -218,35 +265,50 @@ input[type=range]:hover::-moz-range-thumb,input[type=range]:focus-visible::-moz-
  </section>
  <h2 class="rise" id="modules" style="--i:6">// MODULES <span class="n">02 OBJECTS</span></h2>
  <nav class="menu" aria-label="Modules">
-  <button class="mi rise" style="--i:7" id="toExt"><span class="hud-row"><span>01 / extension</span><span>STATUS READY</span></span><b>Extension // Browser host</b><span class="mut">Drop an extension .zip and its panel runs in the browser on a virtual After Effects host.</span><span class="tags"><i>JSZip</i><i>CEP</i><i>ExtendScript</i></span><span class="go">Open / extension</span></button>
-  <a class="mi rise" style="--i:7" href="https://drive.google.com/drive/folders/16WjkwlaowmNgWo8u-dz8DMb80xT4HaBp?usp=drive_link" target="_blank" rel="noopener noreferrer"><span class="hud-row"><span>02 / editing-pack</span><span>SOURCE DRIVE</span></span><b>Editing pack // Archive</b><span class="mut">The editing pack collection on Google Drive. Opens in a new tab.</span><span class="tags"><i>Presets</i><i>Projects</i><i>Assets</i></span><span class="go">Open / Google Drive &#8599;</span></a>
+  <button class="mi rise" style="--i:7" id="toExt"><span class="hud-row"><span>01 / extension</span><span>STATUS READY</span></span><span class="cico"><svg class="ic" aria-hidden="true"><use href="#i-box"/></svg></span><b>Extension // Browser host</b><span class="mut">Drop an extension .zip and its panel runs in the browser on a virtual After Effects host.</span><span class="tags"><i>JSZip</i><i>CEP</i><i>ExtendScript</i></span><span class="go">Open / extension<svg class="ic" aria-hidden="true"><use href="#i-right"/></svg></span></button>
+  <a class="mi rise" style="--i:7" href="https://drive.google.com/drive/folders/16WjkwlaowmNgWo8u-dz8DMb80xT4HaBp?usp=drive_link" target="_blank" rel="noopener noreferrer"><span class="hud-row"><span>02 / editing-pack</span><span>SOURCE DRIVE</span></span><span class="cico"><svg class="ic" aria-hidden="true"><use href="#i-folder"/></svg></span><b>Editing pack // Archive</b><span class="mut">The editing pack collection on Google Drive. Opens in a new tab.</span><span class="tags"><i>Presets</i><i>Projects</i><i>Assets</i></span><span class="go">Open / Google Drive<svg class="ic" aria-hidden="true"><use href="#i-ext"/></svg></span></a>
  </nav>
- <footer class="foot rise" style="--i:8">
-  <p class="hud-row"><span>&gt; cava --mono</span><span>SIGNAL / GENERATIVE</span></p>
+ <h2 class="sr" id="how"><svg class="ic" aria-hidden="true"><use href="#i-layers"/></svg>// WORKFLOW <span class="n">03 STEPS</span></h2>
+<div class="grid3">
+<div class="cell sr" style="--d:0"><span class="hud-row"><span>STEP 01</span><span>INPUT</span></span><span class="cico"><svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg></span><b>Drop the zip</b><p>Drag your extension .zip onto the drop zone, or pick the file.</p></div>
+<div class="cell sr" style="--d:1"><span class="hud-row"><span>STEP 02</span><span>MOUNT</span></span><span class="cico"><svg class="ic" aria-hidden="true"><use href="#i-box"/></svg></span><b>Panel mounts</b><p>The panel opens at its manifest size inside a virtual host.</p></div>
+<div class="cell sr" style="--d:2"><span class="hud-row"><span>STEP 03</span><span>RUN</span></span><span class="cico"><svg class="ic" aria-hidden="true"><use href="#i-term"/></svg></span><b>Run and inspect</b><p>ExtendScript runs on a mock composition. Results land in the console.</p></div>
+</div>
+<h2 class="sr"><svg class="ic" aria-hidden="true"><use href="#i-plug"/></svg>// CAPABILITIES <span class="n">06 ITEMS</span></h2>
+<div class="grid3">
+<div class="cell sr" style="--d:0"><span class="hud-row"><span>CEP / BRIDGE</span><span>OK</span></span><span class="cico"><svg class="ic" aria-hidden="true"><use href="#i-plug"/></svg></span><b>CSInterface mock</b><p>Answers host environment, theme colors and system paths.</p></div>
+<div class="cell sr" style="--d:1"><span class="hud-row"><span>EXTENDSCRIPT</span><span>SANDBOX</span></span><span class="cico"><svg class="ic" aria-hidden="true"><use href="#i-code"/></svg></span><b>Mock host</b><p>Your .jsx runs against a mock app and composition. Every call is logged.</p></div>
+<div class="cell sr" style="--d:2"><span class="hud-row"><span>MANIFEST</span><span>SIZE</span></span><span class="cico"><svg class="ic" aria-hidden="true"><use href="#i-fit"/></svg></span><b>Manifest sizing</b><p>Reads CSXS/manifest.xml and opens the panel at the size it asks for.</p></div>
+<div class="cell sr" style="--d:3"><span class="hud-row"><span>WINDOWS</span><span>FLOAT</span></span><span class="cico"><svg class="ic" aria-hidden="true"><use href="#i-win"/></svg></span><b>Floating windows</b><p>requestOpenExtension opens extra panels as draggable, resizable windows.</p></div>
+<div class="cell sr" style="--d:4"><span class="hud-row"><span>THEME</span><span>DARK / LIGHT</span></span><span class="cico"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg></span><b>Dark and light</b><p>Switch the panel theme. The host reports matching colors.</p></div>
+<div class="cell sr" style="--d:5"><span class="hud-row"><span>CONSOLE</span><span>LIVE</span></span><span class="cico"><svg class="ic" aria-hidden="true"><use href="#i-term"/></svg></span><b>Host console</b><p>Type ExtendScript into the console and watch results and logs.</p></div>
+</div>
+<footer class="foot rise" style="--i:8">
+  <p class="hud-row"><span><svg class="ic" aria-hidden="true"><use href="#i-wave"/></svg> &gt; cava --mono</span><span>SIGNAL / GENERATIVE</span></p>
   <div class="viz" id="viz" aria-hidden="true"></div>
   <p class="hud-row"><span>&copy; 2026 zalfndk. Built with code.</span><span>40 BANDS / MONO</span></p>
  </footer>
 </div>
 <div id="ext" hidden>
-<header class="top"><b>&gt; zalfndk</b><span class="mut">virtual After Effects host</span><nav><button id="toHome">Home</button><a class="btn" href="https://drive.google.com/drive/folders/16WjkwlaowmNgWo8u-dz8DMb80xT4HaBp?usp=drive_link" target="_blank" rel="noopener noreferrer">Editing pack</a><button id="demoBtn">Load demo panel</button></nav></header>
+<header class="top"><b>&gt; zalfndk</b><span class="mut">virtual After Effects host</span><nav><button id="toHome"><svg class="ic" aria-hidden="true"><use href="#i-home"/></svg>Home</button><a class="btn" href="https://drive.google.com/drive/folders/16WjkwlaowmNgWo8u-dz8DMb80xT4HaBp?usp=drive_link" target="_blank" rel="noopener noreferrer"><svg class="ic" aria-hidden="true"><use href="#i-folder"/></svg>Editing pack</a><button id="demoBtn"><svg class="ic" aria-hidden="true"><use href="#i-play"/></svg>Load demo panel</button></nav></header>
 <main>
  <section>
   <h1>Your extension, running in the browser.</h1>
   <p class="lede">Drop the extension .zip. The panel opens at its manifest size, CSInterface gets answers, and ExtendScript calls run against a mock composition. No After Effects needed.</p>
-  <label id="drop" tabindex="0"><span id="dropText">Drop extension.zip here</span><span class="mut" id="dropHint">or click to choose a file</span><input type="file" id="file" accept=".zip" hidden></label>
+  <label id="drop" tabindex="0"><svg class="ic" aria-hidden="true"><use href="#i-upload"/></svg><span id="dropText">Drop extension.zip here</span><span class="mut" id="dropHint">or click to choose a file</span><input type="file" id="file" accept=".zip" hidden></label>
   <div id="tools" hidden>
-   <button data-w="310" data-h="616">Dock 310x616</button><button data-w="616" data-h="310">Landscape 616x310</button><button data-w="480" data-h="360">Floating 480x360</button>
-   <span class="sep"></span><label class="fld">W <input type="number" id="iw" min="120" max="2400" step="10"></label><label class="fld">H <input type="number" id="ih" min="100" max="2400" step="10"></label><button id="fit" aria-pressed="true">Auto fit</button>
-   <span class="sep"></span><button id="tDark" aria-pressed="true">Dark</button><button id="tLight" aria-pressed="false">Light</button>
-   <span class="sep"></span><button id="reload">Reload panel</button><span class="mut" id="size"></span>
+   <button data-w="310" data-h="616"><svg class="ic" aria-hidden="true"><use href="#i-dock"/></svg>Dock 310x616</button><button data-w="616" data-h="310"><svg class="ic" aria-hidden="true"><use href="#i-land"/></svg>Landscape 616x310</button><button data-w="480" data-h="360"><svg class="ic" aria-hidden="true"><use href="#i-win"/></svg>Floating 480x360</button>
+   <span class="sep"></span><label class="fld">W <input type="number" id="iw" min="120" max="2400" step="10"></label><label class="fld">H <input type="number" id="ih" min="100" max="2400" step="10"></label><button id="fit" aria-pressed="true"><svg class="ic" aria-hidden="true"><use href="#i-fit"/></svg>Auto fit</button>
+   <span class="sep"></span><button id="tDark" aria-pressed="true"><svg class="ic" aria-hidden="true"><use href="#i-moon"/></svg>Dark</button><button id="tLight" aria-pressed="false"><svg class="ic" aria-hidden="true"><use href="#i-sun"/></svg>Light</button>
+   <span class="sep"></span><button id="reload"><svg class="ic" aria-hidden="true"><use href="#i-reload"/></svg>Reload panel</button><span class="mut" id="size"></span>
   </div>
   <div class="sliders" id="sliders" hidden><label>Width <input type="range" id="rw" min="180" max="1400" aria-label="Panel width"></label><label>Height <input type="range" id="rh" min="100" max="1400" aria-label="Panel height"></label></div>
   <div class="stagewrap" id="stage" hidden><div id="fitbox"><div id="dock" data-t="dark"><div class="tab" id="tabName">Panel</div><iframe id="panel" title="Extension panel" sandbox="allow-scripts allow-same-origin allow-forms allow-modals allow-popups"></iframe><div id="grip" aria-label="Drag to resize"></div></div></div></div>
  </section>
  <aside>
-  <h2>Extension</h2>
+  <h2><svg class="ic" aria-hidden="true"><use href="#i-info"/></svg>Extension</h2>
   <dl id="info"><dt>status</dt><dd>no zip loaded</dd></dl>
-  <h2>Host console</h2>
+  <h2><svg class="ic" aria-hidden="true"><use href="#i-term"/></svg>Host console</h2>
   <div id="log" aria-live="polite"></div>
   <input id="cmd" placeholder="evalScript, e.g. app.project.activeItem.name" aria-label="Run ExtendScript">
  </aside>
@@ -254,6 +316,7 @@ input[type=range]:hover::-moz-range-thumb,input[type=range]:focus-visible::-moz-
 </div>
 <script>
 const $=s=>document.querySelector(s);
+const ic=n=>'<svg class="ic" aria-hidden="true"><use href="#i-'+n+'"/></svg>';
 let files={},man={},theme='dark',hostFrame,loaded=false;
 const MIME={png:'image/png',jpg:'image/jpeg',jpeg:'image/jpeg',gif:'image/gif',svg:'image/svg+xml',webp:'image/webp',woff:'font/woff',woff2:'font/woff2',ttf:'font/ttf',otf:'font/otf'};
 function log(t,c){const d=document.createElement('div'),L=$('#log');d.className='l '+(c||'');d.textContent=new Date().toTimeString().slice(0,8)+'  '+t;L.appendChild(d);L.scrollTop=L.scrollHeight;while(L.children.length>300)L.firstChild.remove()}
@@ -296,7 +359,7 @@ function openExt(id){const x=man.exts&&man.exts[id];if(!x||!files[x.main])return
  const M=n=>document.createElement(n),el=M('div'),bar=M('div'),t=M('span'),bt=M('span'),mx=M('button'),c=M('button'),f=M('iframe'),g=M('div');
  const W=Math.min(x.w,innerWidth-16),H=Math.min(x.h,innerHeight-80);
  el.className='win';el.dataset.t=theme;el.style.cssText='z-index:'+(++zTop)+';width:'+W+'px;height:'+H+'px;left:'+Math.max(8,(innerWidth-W)/2)+'px;top:64px';
- bar.className='wbar';t.className='wt';t.textContent=x.menu||id;bt.className='wbtn';mx.textContent='fit';mx.setAttribute('aria-label','Fit to screen');c.textContent='x';c.setAttribute('aria-label','Close window');g.className='wgrip';g.setAttribute('aria-label','Drag to resize');
+ bar.className='wbar';t.className='wt';t.textContent=x.menu||id;bt.className='wbtn';mx.innerHTML=ic('max');mx.setAttribute('aria-label','Fit to screen');c.innerHTML=ic('x');c.setAttribute('aria-label','Close window');g.className='wgrip';g.setAttribute('aria-label','Drag to resize');
  f.title=x.menu||id;f.setAttribute('sandbox','allow-scripts allow-same-origin allow-forms allow-modals allow-popups');
  bt.append(mx,c);bar.append(t,bt);el.append(bar,f,g);document.body.appendChild(el);
  const k={id,el,f};wins.push(k);c.onclick=()=>closeWin(k);
@@ -410,14 +473,17 @@ function leave(){if(gone)return;gone=true;ex.disabled=true;ac();AC.resume();sfx(
  setTimeout(()=>{boot.classList.add('out');$('#home').inert=$('#ext').inert=false;$('#home').classList.add('go');setTimeout(()=>{boot.remove();typeLoop();heroType()},450)},350)}
 ex.onclick=leave;
 /* views */
-function go(v){const e=v==='ext';$('#home').hidden=e;$('#ext').hidden=!e;document.body.classList.toggle('work',e);scrollTo(0,0);sfx('sweep');if(e&&loaded)apply()}
+function go(v){const e=v==='ext',out=e?$('#home'):$('#ext'),inn=e?$('#ext'):$('#home');
+ const sw=()=>{out.hidden=true;out.classList.remove('vout');inn.hidden=false;inn.classList.remove('vin');if(e){void inn.offsetWidth;inn.classList.add('vin')}document.body.classList.toggle('work',e);scrollTo({top:0,behavior:'instant'});sfx('sweep');if(e&&loaded)apply()};
+ if(still||out.hidden)sw();else{out.classList.add('vout');setTimeout(sw,180)}}
 $('#toExt').onclick=()=>go('ext');$('#toHome').onclick=()=>go('home');
 /* matrix rain */
-const cv=$('#rain'),cx=cv.getContext('2d'),G='ｦｧｨｩｪｫｬｭｮｯｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄ0123456789ZALFNDK',still=matchMedia('(prefers-reduced-motion: reduce)').matches;let dr=[];
-function sz(){cv.width=innerWidth;cv.height=innerHeight;dr=Array.from({length:Math.ceil(cv.width/16)},()=>Math.random()*-60)}
+const cv=$('#rain'),cx=cv.getContext('2d'),G='ｦｧｨｩｪｫｬｭｮｯｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄ0123456789ZALFNDK',still=matchMedia('(prefers-reduced-motion: reduce)').matches;let dr=[],sp=[],pf=[];
+function sz(){cv.width=innerWidth;cv.height=innerHeight;dr=Array.from({length:Math.ceil(cv.width/16)},()=>Math.random()*-60);sp=dr.map(()=>.22+Math.random()*.3);pf=dr.map(()=>-1)}
 sz();addEventListener('resize',sz);
-if(!still)setInterval(()=>{if(document.hidden)return;cx.fillStyle='rgba(16,16,16,.09)';cx.fillRect(0,0,cv.width,cv.height);cx.fillStyle='#8a8a8a';cx.font='15px monospace';
- dr.forEach((y,i)=>{cx.fillText(G[Math.random()*G.length|0],i*16,y*16);dr[i]=y*16>cv.height&&Math.random()>.975?0:y+1})},60);
+function rain(){requestAnimationFrame(rain);if(document.hidden)return;cx.fillStyle='rgba(16,16,16,.06)';cx.fillRect(0,0,cv.width,cv.height);cx.fillStyle='#8a8a8a';cx.font='15px monospace';
+ for(let i=0;i<dr.length;i++){dr[i]+=sp[i];const f=Math.floor(dr[i]);if(f!==pf[i]){pf[i]=f;if(f>=0)cx.fillText(G[Math.random()*G.length|0],i*16,f*16)}if(f*16>cv.height&&Math.random()>.975)dr[i]=0}}
+if(!still)requestAnimationFrame(rain);
 /* coding animation */
 const SN=[`// host.jsx
 function matchComp() {
@@ -449,8 +515,10 @@ function clk(){const d=new Date(),o=-d.getTimezoneOffset()/60;$('#clk').textCont
 clk();setInterval(clk,15000);
 const vz=$('#viz');for(let i=0;i<40;i++)vz.append(document.createElement('i'));
 const vb=[...vz.children],vh=vb.map(()=>6);
-if(still)vb.forEach((b,i)=>b.style.height=(12+Math.abs(Math.sin(i*.6))*60)+'%');
-else setInterval(()=>{if(document.hidden||$('#home').hidden)return;vb.forEach((b,i)=>{const t=8+Math.abs(Math.sin(Date.now()/420+i*.5))*50*Math.random()+Math.random()*20;vh[i]+=(t-vh[i])*.35;b.style.height=vh[i]+'%'})},90);
+let vt=0,tg=vb.map(()=>6);
+if(still)vb.forEach((b,i)=>b.style.transform='scaleY('+(12+Math.abs(Math.sin(i*.6))*60)/100+')');
+else(function vloop(t){requestAnimationFrame(vloop);if(document.hidden||$('#home').hidden)return;if(t-vt>140){vt=t;tg=tg.map((_,i)=>8+Math.abs(Math.sin(Date.now()/420+i*.5))*50*Math.random()+Math.random()*20)}
+ vb.forEach((b,i)=>{vh[i]+=(tg[i]-vh[i])*.16;b.style.transform='scaleY('+vh[i]/100+')'})})(0);
 
 /* audio: synthesized lofi loop + sfx (Web Audio, no files) */
 let AC,mG,sG,mOn=false,vol=.35,sfxOn=true,tm,nT=0,st8=0,pref=true;
@@ -478,7 +546,7 @@ function sfx(k){if(!sfxOn||!AC)return;const t=AC.currentTime;
  else if(k==='tick')noise(t,.02,.03,3000,sG);
  else if(k==='sweep'){const o=AC.createOscillator(),g=AC.createGain();o.type='sawtooth';o.frequency.setValueAtTime(200,t);o.frequency.exponentialRampToValueAtTime(1600,t+.35);g.gain.setValueAtTime(.0001,t);g.gain.linearRampToValueAtTime(.04,t+.1);g.gain.exponentialRampToValueAtTime(.0001,t+.4);o.connect(g);g.connect(sG);o.start(t);o.stop(t+.45)}
  else if(k==='granted')[523,659,784,1047].forEach((f,i)=>tone(f,t+i*.09,.35,'triangle',.06,sG))}
-function ui(){$('#plb').textContent=mOn?'Pause':'> Play';$('#plb').setAttribute('aria-pressed',mOn);$('#pst').textContent='LOFI / '+(mOn?'PLAYING':AC?'PAUSED':'READY');$('#sfxb').textContent='SFX '+(sfxOn?'ON':'OFF');$('#sfxb').setAttribute('aria-pressed',sfxOn)}
+function ui(){$('#plb').innerHTML=ic(mOn?'pause':'play')+(mOn?'Pause':'Play');$('.pl').classList.toggle('on',mOn);$('#plb').setAttribute('aria-pressed',mOn);$('#pst').textContent='LOFI / '+(mOn?'PLAYING':AC?'PAUSED':'READY');$('#sfxb').innerHTML=ic(sfxOn?'zap':'zapoff')+'SFX '+(sfxOn?'ON':'OFF');$('#sfxb').setAttribute('aria-pressed',sfxOn)}
 const sv=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
 $('#plb').onclick=()=>{pref=!mOn;sv('zf-music',pref?'on':'off');mOn?stopM():playM()};
 $('#sfxb').onclick=()=>{sfxOn=!sfxOn;sv('zf-sfx',sfxOn?'on':'off');ui();ac();AC.resume();sfx('click')};
@@ -496,8 +564,13 @@ const fillAll=()=>document.querySelectorAll('input[type=range]').forEach(fill);
 document.addEventListener('input',e=>{if(e.target.type==='range')fill(e.target)});
 const _ap=apply;apply=function(){_ap();fillAll()};fillAll();
 ['iw','ih'].forEach(id=>{const i=$('#'+id),m=document.createElement('button'),q=document.createElement('button');
- m.type=q.type='button';m.className=q.className='stp';m.textContent='-';q.textContent='+';m.setAttribute('aria-label','Decrease');q.setAttribute('aria-label','Increase');
+ m.type=q.type='button';m.className=q.className='stp';m.innerHTML=ic('minus');q.innerHTML=ic('plus');m.setAttribute('aria-label','Decrease');q.setAttribute('aria-label','Increase');
  const f=d=>{i.value=+i.value+d;i.dispatchEvent(new Event('input'))};m.onclick=()=>f(-10);q.onclick=()=>f(10);i.before(m);i.after(q)});
+
+/* scroll reveal + pointer glow */
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
+document.querySelectorAll('.sr').forEach(el=>io.observe(el));
+document.addEventListener('pointermove',e=>{const t=e.target.closest&&e.target.closest('.mi,.cell');if(!t)return;const b=t.getBoundingClientRect();t.style.setProperty('--mx',e.clientX-b.left+'px');t.style.setProperty('--my',e.clientY-b.top+'px')});
 </script>
 </body>
 </html>

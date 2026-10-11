@@ -254,11 +254,10 @@ h2 .ic{margin-right:8px;vertical-align:-2px}
 #gear[aria-expanded=true] .ic{transform:rotate(90deg)}
 #gear .eq{width:0;margin:0;opacity:0;overflow:hidden;transition:width .3s var(--ease),margin .3s var(--ease),opacity .3s var(--ease)}
 #gear.on .eq{width:10px;margin-left:9px;opacity:1}
-body.dk-on:not(.set-open) #gear{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 body.set-open .dk.on{transform:translate3d(-50%,calc(100% + 32px),0);opacity:0;visibility:hidden;pointer-events:none}
 .setbk{position:fixed;inset:0;z-index:44;opacity:0;visibility:hidden;transition:opacity .3s var(--ease),visibility 0s .3s}
 .setbk.open{opacity:1;visibility:visible;transition:opacity .3s var(--ease),visibility 0s}
-.set{position:fixed;z-index:45;right:12px;bottom:calc(68px + env(safe-area-inset-bottom,0px));width:min(348px,calc(100% - 24px));max-height:min(calc(100vh - 96px),660px);overflow-y:auto;overscroll-behavior:contain;padding:6px;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(18,18,18,.92);-webkit-backdrop-filter:blur(22px) saturate(1.2);backdrop-filter:blur(22px) saturate(1.2);box-shadow:0 18px 50px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06);
+.set{position:fixed;z-index:45;right:12px;bottom:calc(66px + env(safe-area-inset-bottom,0px));width:min(348px,calc(100% - 24px));max-height:min(calc(100vh - 96px),660px);overflow-y:auto;overscroll-behavior:contain;padding:6px;border:1px solid rgba(255,255,255,.12);border-radius:20px;background:rgba(18,18,18,.92);-webkit-backdrop-filter:blur(22px) saturate(1.2);backdrop-filter:blur(22px) saturate(1.2);box-shadow:0 18px 50px rgba(0,0,0,.6),inset 0 1px 0 rgba(255,255,255,.06);
  transform:translate3d(0,16px,0) scale(.97);transform-origin:bottom right;opacity:0;visibility:hidden;transition:transform .3s cubic-bezier(.3,0,1,1),opacity .2s cubic-bezier(.3,0,1,1),visibility 0s .3s}
 .set.open{transform:none;opacity:1;visibility:visible;transition:transform .5s var(--ease),opacity .25s var(--ease),visibility 0s}
 .sh{display:flex;align-items:center;justify-content:space-between;padding:8px 8px 4px 12px}
@@ -285,6 +284,23 @@ body.set-open .dk.on{transform:translate3d(-50%,calc(100% + 32px),0);opacity:0;v
  .setbk{background:rgba(0,0,0,.55)}
  .set{left:12px;right:12px;width:auto;bottom:calc(12px + env(safe-area-inset-bottom,0px));max-height:82vh;transform:translate3d(0,40px,0);transform-origin:bottom center}
  .set.open{transform:none}
+}
+/* performance: no live blur on touch, lighter shadows, instant taps */
+html{touch-action:manipulation}
+.vout,.vin{will-change:opacity,transform}
+@media(pointer:coarse),(max-width:700px){
+ .dk,#gear,.set{-webkit-backdrop-filter:none;backdrop-filter:none}
+ .dk{background:rgba(20,20,20,.97);box-shadow:0 6px 18px rgba(0,0,0,.5)}
+ #gear{background:rgba(20,20,20,.97)}
+ .set{background:rgba(20,20,20,.985);box-shadow:0 10px 30px rgba(0,0,0,.6)}
+}
+@media(max-width:700px){body.dk-on:not(.set-open) #gear{bottom:calc(84px + env(safe-area-inset-bottom,0px))}}
+/* laptop: settings as a right-hand drawer */
+@media(min-width:701px){
+ .set{top:0;right:0;bottom:0;width:360px;max-height:none;padding:10px 10px 16px;border-width:0 0 0 1px;border-radius:0;background:rgba(16,16,16,.96);box-shadow:-24px 0 60px rgba(0,0,0,.45);transform:translate3d(32px,0,0);transform-origin:right center}
+ .set.open{transform:none}
+ body.set-open #gear{opacity:0;pointer-events:none}
+ #gear{transition:bottom .55s var(--ease),opacity .25s var(--ease),background var(--t1) var(--ease),border-color var(--t1) var(--ease),transform .12s var(--ease)}
 }
 </style>
 </head>
@@ -341,7 +357,7 @@ body.set-open .dk.on{transform:translate3d(-50%,calc(100% + 32px),0);opacity:0;v
   <span class="stat" id="clk">LOCAL / TIME --:--</span></header>
  <section class="hero">
   <p class="eyebrow rise" style="--i:1">// HELLO, WORLD.</p>
-  <h1 class="rise" style="--i:2" aria-label="Hi! This is zalfndk. After Effects tools."><span id="hl" aria-hidden="true"></span><span class="blk" aria-hidden="true">&#9608;</span></h1>
+  <h1 class="rise" style="--i:2" aria-label="Hi! This is zalfndk."><span id="hl" aria-hidden="true"></span><span class="blk" aria-hidden="true">&#9608;</span></h1>
   <p class="lede rise" style="--i:3">Run an After Effects extension from its zip, right in the browser, without opening After Effects. Grab the editing pack too.</p>
   <a class="btn rise" style="--i:4" href="#modules"><svg class="ic" aria-hidden="true"><use href="#i-down"/></svg>View menu</a>
   <div class="term rise" style="--i:5" aria-hidden="true">
@@ -571,10 +587,11 @@ try{history.replaceState({v:'home'},'','#home')}catch(e){}
 addEventListener('popstate',()=>{const v=location.hash==='#ext'?'ext':'home';if(v!==(document.body.classList.contains('work')?'ext':'home'))go(v,true)});
 document.querySelectorAll('a[href="#home"]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();if(document.body.classList.contains('work'))go('home');else scrollTo({top:0,behavior:still?'auto':'smooth'})}));
 /* matrix rain */
-const cv=$('#rain'),cx=cv.getContext('2d'),G='ｦｧｨｩｪｫｬｭｮｯｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄ0123456789ZALFNDK',still=matchMedia('(prefers-reduced-motion: reduce)').matches;let dr=[],sp=[],pf=[],rainOn=true,autoHide=true;
-function sz(){cv.width=innerWidth;cv.height=innerHeight;dr=Array.from({length:Math.ceil(cv.width/16)},()=>Math.random()*-60);sp=dr.map(()=>.22+Math.random()*.3);pf=dr.map(()=>-1)}
-sz();addEventListener('resize',sz);
-function rain(){requestAnimationFrame(rain);if(document.hidden||!rainOn)return;cx.fillStyle='rgba(16,16,16,.06)';cx.fillRect(0,0,cv.width,cv.height);cx.fillStyle='#8a8a8a';cx.font='15px monospace';
+const coarse=matchMedia('(pointer:coarse)').matches,cv=$('#rain'),cx=cv.getContext('2d'),G='ｦｧｨｩｪｫｬｭｮｯｱｲｳｴｵｶｷｸｹｺｻｼｽｾｿﾀﾁﾂﾃﾄ0123456789ZALFNDK',still=matchMedia('(prefers-reduced-motion: reduce)').matches;let dr=[],sp=[],pf=[],rainOn=true,autoHide=true;
+function sz(){cv.width=innerWidth;cv.height=innerHeight+(coarse?160:0);cv.style.width=cv.width+'px';cv.style.height=cv.height+'px';dr=Array.from({length:Math.ceil(cv.width/16)},()=>Math.random()*-60);sp=dr.map(()=>.22+Math.random()*.3);pf=dr.map(()=>-1)}
+sz();let rw=innerWidth;addEventListener('resize',()=>{if(innerWidth===rw)return;rw=innerWidth;sz()});
+let rl=0;
+function rain(t){requestAnimationFrame(rain);t=t||performance.now();if(document.hidden||!rainOn||t-rl<(coarse?45:0))return;if(coarse&&(document.body.classList.contains('work')||document.body.classList.contains('set-open')))return;rl=t;cx.fillStyle=coarse?'rgba(16,16,16,.1)':'rgba(16,16,16,.06)';cx.fillRect(0,0,cv.width,cv.height);cx.fillStyle='#8a8a8a';cx.font='15px monospace';
  for(let i=0;i<dr.length;i++){dr[i]+=sp[i];const f=Math.floor(dr[i]);if(f!==pf[i]){pf[i]=f;if(f>=0)cx.fillText(G[Math.random()*G.length|0],i*16,f*16)}if(f*16>cv.height&&Math.random()>.975)dr[i]=0}}
 if(!still)requestAnimationFrame(rain);
 /* coding animation */
@@ -602,15 +619,15 @@ function typeLoop(){const code=$('#code'),cs=$('#cstat');
 
 /* HUD extras */
 $('#nExt').onclick=()=>go('ext');
-function heroType(){const el=$('#hl'),t='Hi!\nThis is zalfndk\nAfter Effects tools';if(still){el.textContent=t;return}let i=0;(function n(){el.textContent=t.slice(0,++i);sfx('tick');if(i<t.length)setTimeout(n,t[i-1]==='\n'?220:55)})()}
+function heroType(){const el=$('#hl'),t='Hi!\nThis is zalfndk';if(still){el.textContent=t;return}let i=0;(function n(){el.textContent=t.slice(0,++i);sfx('tick');if(i<t.length)setTimeout(n,t[i-1]==='\n'?220:55)})()}
 if(still)heroType();
 function clk(){const d=new Date(),o=-d.getTimezoneOffset()/60;$('#clk').textContent='LOCAL / TIME '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})+' GMT'+(o>=0?'+':'')+o}
 clk();setInterval(clk,15000);
 const vz=$('#viz');for(let i=0;i<40;i++)vz.append(document.createElement('i'));
 const vb=[...vz.children],vh=vb.map(()=>6);
-let vt=0,tg=vb.map(()=>6);
+let vt=0,tg=vb.map(()=>6),vl=0,vvis=true;try{new IntersectionObserver(e=>{vvis=e[0].isIntersecting}).observe(vz)}catch(e){}
 if(still)vb.forEach((b,i)=>b.style.transform='scaleY('+(12+Math.abs(Math.sin(i*.6))*60)/100+')');
-else(function vloop(t){requestAnimationFrame(vloop);if(document.hidden||$('#home').hidden)return;if(t-vt>140){vt=t;tg=tg.map((_,i)=>8+Math.abs(Math.sin(Date.now()/420+i*.5))*50*Math.random()+Math.random()*20)}
+else(function vloop(t){requestAnimationFrame(vloop);if(document.hidden||$('#home').hidden||!vvis||t-vl<33)return;vl=t;if(t-vt>140){vt=t;tg=tg.map((_,i)=>8+Math.abs(Math.sin(Date.now()/420+i*.5))*50*Math.random()+Math.random()*20)}
  vb.forEach((b,i)=>{vh[i]+=(tg[i]-vh[i])*.16;b.style.transform='scaleY('+vh[i]/100+')'})})(0);
 
 /* audio: synthesized lofi loop + sfx (Web Audio, no files) */
@@ -619,7 +636,8 @@ try{pref=localStorage.getItem('zf-music')!=='off';sfxOn=localStorage.getItem('zf
 const mid=n=>440*2**((n-69)/12);
 function ac(){if(AC)return;AC=new(window.AudioContext||window.webkitAudioContext)();const m=AC.createGain();m.connect(AC.destination);mG=AC.createGain();mG.gain.value=0;const lp=AC.createBiquadFilter();lp.type='lowpass';lp.frequency.value=1700;mG.connect(lp);lp.connect(m);sG=AC.createGain();sG.gain.value=.6;sG.connect(m)}
 function tone(f,t,d,ty,v,o2){const o=AC.createOscillator(),g=AC.createGain();o.type=ty;o.frequency.value=f;g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(o2);o.start(t);o.stop(t+d+.05)}
-function noise(t,d,v,hp,o2){const n=AC.sampleRate*d|0,b=AC.createBuffer(1,n,AC.sampleRate),a=b.getChannelData(0);for(let i=0;i<n;i++)a[i]=Math.random()*2-1;const s=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain();s.buffer=b;f.type='highpass';f.frequency.value=hp;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(f);f.connect(g);g.connect(o2);s.start(t)}
+const NB={};
+function noise(t,d,v,hp,o2){let b=NB[d];if(!b){const n=AC.sampleRate*d|0;b=NB[d]=AC.createBuffer(1,n,AC.sampleRate);const a=b.getChannelData(0);for(let i=0;i<n;i++)a[i]=Math.random()*2-1}const s=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain();s.buffer=b;f.type='highpass';f.frequency.value=hp;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(f);f.connect(g);g.connect(o2);s.start(t)}
 function kick(t){const o=AC.createOscillator(),g=AC.createGain();o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(42,t+.16);g.gain.setValueAtTime(.45,t);g.gain.exponentialRampToValueAtTime(.0001,t+.3);o.connect(g);g.connect(mG);o.start(t);o.stop(t+.35)}
 const CH=[[53,57,60,64],[52,55,59,62],[50,53,57,60],[48,52,55,59]],PN=[72,74,76,79,81],BEAT=60/76;
 function p8(s,t){const k=s&7,c=CH[s>>3];
@@ -655,9 +673,9 @@ document.addEventListener('pointerover',e=>{if(e.pointerType!=='mouse')return;co
 ui();
 
 /* bottom dock: shows on any interaction, hides after 3s idle */
-const dk=$('#tabbar'),dkh=$('#dkh');let dkT,dkOn=false,dkReady=false,dkHold=false,dkLast=0;
+const dk=$('#tabbar'),dkh=$('#dkh');let dkT,dkOn=false,dkReady=false,dkHold=false,dkLast=0,dkTs=0;
 function dkSet(v){dk.dataset.v=v;dk.querySelectorAll('[data-v]').forEach(b=>b.dataset.v===v?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current'))}
-function dkShow(){if(!dkReady)return;if(!dkOn){dkOn=true;dk.classList.add('on');dkh.classList.remove('on');document.body.classList.add('dk-on')}clearTimeout(dkT);if(!dkHold&&autoHide)dkT=setTimeout(dkHide,3000)}
+function dkShow(){if(!dkReady)return;if(dkOn){const n=performance.now();if(n-dkTs<250)return;dkTs=n}if(!dkOn){dkOn=true;dk.classList.add('on');dkh.classList.remove('on');document.body.classList.add('dk-on')}clearTimeout(dkT);if(!dkHold&&autoHide)dkT=setTimeout(dkHide,3000)}
 function dkHide(){if(!dkReady||dkHold||!autoHide)return;dkOn=false;dk.classList.remove('on');dkh.classList.add('on');document.body.classList.remove('dk-on')}
 function dkEnable(){dkReady=true;gear.hidden=false;dk.hidden=false;dkh.hidden=false;dkh.classList.add('on');setTimeout(dkShow,700)}
 dk.querySelectorAll('button[data-v]').forEach(b=>b.addEventListener('click',()=>{if(dk.dataset.v===b.dataset.v){scrollTo({top:0,behavior:still?'auto':'smooth'});return}go(b.dataset.v)}));
@@ -698,7 +716,7 @@ const _ap=apply;apply=function(){_ap();fillAll()};fillAll();
 /* scroll reveal + pointer glow */
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.15});
 document.querySelectorAll('.sr').forEach(el=>io.observe(el));
-document.addEventListener('pointermove',e=>{const t=e.target.closest&&e.target.closest('.mi,.cell');if(!t)return;const b=t.getBoundingClientRect();t.style.setProperty('--mx',e.clientX-b.left+'px');t.style.setProperty('--my',e.clientY-b.top+'px')});
+document.addEventListener('pointermove',e=>{if(e.pointerType!=='mouse')return;const t=e.target.closest&&e.target.closest('.mi,.cell');if(!t)return;const b=t.getBoundingClientRect();t.style.setProperty('--mx',e.clientX-b.left+'px');t.style.setProperty('--my',e.clientY-b.top+'px')});
 </script>
 </body>
 </html>
